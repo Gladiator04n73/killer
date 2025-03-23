@@ -1,0 +1,22 @@
+.loadingContainer {
+  background-color: rgba(249, 249, 249, 1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  padding: 487px 80px;
+}
+
+@media (max-width: 991px) {
+  .loadingContainer {
+    padding: 100px 20px;
+  }
+}
+
+.loadingSpinner {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  width: 50px;
+}
