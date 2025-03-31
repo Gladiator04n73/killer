@@ -78,7 +78,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_12_000003) do
 
   create_table "post_subscriptions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "post_id"
+    t.integer "article_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

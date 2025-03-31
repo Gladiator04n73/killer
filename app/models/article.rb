@@ -21,6 +21,9 @@ class Article < ApplicationRecord
       return nil
     end
   end
+  def user_photo_url
+    user.photo_url if user.present?
+  end
   def self.ransackable_attributes(auth_object = nil)
     %w[title body]
   end

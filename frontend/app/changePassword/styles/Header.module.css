@@ -58,11 +58,11 @@
   background: #fff;
   border: 1px solid #efefef;
   border-radius: 8px;
-  width: calc(100% - 24px); /* Adjust width to account for padding */
+  width: calc(100% - 24px);
   max-height: 300px;
   overflow-y: auto;
-  top: 100%; /* Position below the search input */
-  left: 0; /* Align with container edge */
+  top: 100%;
+  left: 0;
   margin-top: 4px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   z-index: 1000;
@@ -102,95 +102,95 @@
 }
 
 .formPost {
-  width: 90%; /* Adjust width for responsiveness */
-  max-width: 500px; /* Set a max width */
-  height: auto; /* Allow height to adjust based on content */
-  position: fixed; /* Centered overlay */
-  top: 50%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -50%); /* Adjust for element's own size */
-  z-index: 1000; /* Ensure it appears above other elements */
-  background: #fff; /* Background color for visibility */
-  padding: 20px; /* Padding for the form */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+  width: 90%; 
+  max-width: 500px; 
+  height: auto;
+  position: fixed;
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  z-index: 1000; 
+  background: #fff;
+  padding: 20px; 
+  border-radius: 8px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .formPostInput {
   width: 100%;
-  padding: 12px; /* Increased padding for better appearance */
+  padding: 12px; 
   margin-bottom: 10px;
-  border: 1px solid #007bff; /* Changed border color */
+  border: 1px solid #007bff;
   border-radius: 4px;
-  font-size: 16px; /* Increased font size */
+  font-size: 16px;
 }
 
 .formPostTextarea {
   width: 100%;
-  padding: 12px; /* Increased padding for better appearance */
+  padding: 12px;
   margin-bottom: 10px;
-  border: 1px solid #007bff; /* Changed border color */
+  border: 1px solid #007bff;
   border-radius: 4px;
-  height: 120px; /* Increased height */
-  font-size: 16px; /* Increased font size */
+  height: 120px; 
+  font-size: 16px; 
 }
 
 .formPostButton {
   width: 100%;
   margin-top: 12px;
-  padding: 12px; /* Increased padding for better appearance */
+  padding: 12px; 
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px; /* Increased font size */
+  font-size: 16px; 
 }
 
 .formPostButton:hover {
-  background-color: #0056b3; /* Darker shade on hover */
+  background-color: #0056b3;
 }
 
 
 
 .divider {
-  border: none; /* Убираем стандартные границы */
-  margin: 10px 0; /* Отступы сверху и снизу */
+  border: none; 
+  margin: 10px 0; 
 }
 
 .dropdownMenu {
   bottom: 68%;
   position: absolute; 
-  display: inline-block; /* Keep it inline */
+  display: inline-block; 
   z-index: 1000;
 }
 .dropdownMenuContent {
-  position: relative; /* Position it absolutely */
-  top: 100%; /* Position it directly below the dropdown menu */
-  left: 100%; /* Center it horizontally */
-  transform: translateX(-50%); /* Adjust for centering */
-  background-color: #ffffff; /* White background */
-  min-width: 150px; /* Minimum width */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
-  border-radius: 8px; /* Rounded corners */
-  z-index: 1; /* Ensure it appears above other elements */
-  padding: 12px 0; /* Padding for the content */
+  position: relative;
+  top: 100%; 
+  left: 100%; 
+  transform: translateX(-50%); 
+  background-color: #ffffff;
+  min-width: 150px; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+  border-radius: 8px;
+  z-index: 1;
+  padding: 12px 0; 
 }
 
 .dropdownLink {
-  display: block; /* Make links block elements */
-  padding: 10px 16px; /* Padding for links */
-  color: #262626; /* Dark text color */
-  text-decoration: none; /* Remove underline */
-  font-size: 14px; /* Font size */
+  display: block;
+  padding: 10px 16px; 
+  color: #262626; 
+  text-decoration: none;
+  font-size: 14px; 
 }
 
 .dropdownLink:hover {
-  background-color: #f0f0f0; /* Light gray on hover */
+  background-color: #f0f0f0;
 }
 
 .dropdownMenuDivider {
-  height: 1px; /* Divider height */
-  background-color: #efefef; /* Light gray color */
-  margin: 8px 0; /* Margin for spacing */
+  height: 1px;
+  background-color: #efefef; 
+  margin: 8px 0; 
 }

@@ -15,6 +15,11 @@ Rails.application.routes.draw do
     end
     resources :users, only: [:index, :show] do
       member do
+        post 'update_photo', to: 'users#update_photo'
+      end
+      get 'following_status', to: 'users#following_status', as: 'following_status' # New route to check follow status
+      get 'following', to: 'users#following' # New route to fetch following users
+      member do
         post :follow
         post :unfollow
         get :followers

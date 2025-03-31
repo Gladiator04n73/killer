@@ -167,10 +167,10 @@ export const Header = () => {
           {show === 'heart' && (
             <div className={`${styles.dropdownMenu} ${show === 'heart' ? styles.active : ''}`}>
               <div className={styles.dropdownMenuContent}>
-                <Link href="/profile" className={styles.dropdownLink}>Профиль</Link>
+                <Link href="/mypage" className={styles.dropdownLink}>Профиль</Link>
                 <Link href="/editProfile" className={styles.dropdownLink}>Настройки</Link>
                 <div className={styles.dropdownMenuDivider} />
-                <a onClick={handleLogout} className={styles.dropdownLink}>Выйти</a> {/* Change Link to a */}
+                <a onClick={handleLogout} className={styles.dropdownLink}>Выйти</a>
               </div>
             </div>
           )}

@@ -5,7 +5,7 @@
   flex-direction: column;
   overflow: hidden;
   align-items: center;
-  width: 100%; /* Ensure the profile spans the full width */
+  width: 100%;
 }
 
 .divider {

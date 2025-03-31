@@ -1,6 +1,6 @@
 export const login = async (email, password) => {
     try {
-      console.log('Logging in with:', { email, password }); // Debugging log
+      console.log('Logging in with:', { email, password });
       const response = await fetch('http://localhost:3001/api/sessions', {
         method: 'POST',
         credentials: 'include',
@@ -40,8 +40,8 @@ export const login = async (email, password) => {
         };
       }
       
-      const session = await checkSession(); // Call checkSession to verify
-      console.log('Session verification result:', session); // Debugging log
+      const session = await checkSession();
+      console.log('Session verification result:', session);
 
       return data;
     } catch (error) {
@@ -58,8 +58,8 @@ export const logout = async () => {
       });
   
       if (!response.ok) {
-        const errorData = await response.json(); // Parse error data
-        throw new Error(errorData.error || 'Logout failed'); // Provide detailed error message
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Logout failed');
       }
     } catch (error) {
       console.error('Logout error:', error);
@@ -69,7 +69,7 @@ export const logout = async () => {
 
 export const register = async (email, name, nickname, password) => {
     try {
-      console.log('Registering with:', { email, name, nickname, password }); // Debugging log
+      console.log('Registering with:', { email, name, nickname, password });
       const response = await fetch('http://localhost:3001/api/registrations', {
         method: 'POST',
         credentials: 'include',
@@ -97,7 +97,7 @@ export const register = async (email, name, nickname, password) => {
         throw new Error(errorData.error || 'Registration failed');
       }
 
-      return await response.json(); // Возвращаем данные пользователя
+      return await response.json();
     } catch (error) {
       console.error('Registration error:', error);
       throw new Error(error.message || 'Произошла ошибка при регистрации. Попробуйте еще раз.');

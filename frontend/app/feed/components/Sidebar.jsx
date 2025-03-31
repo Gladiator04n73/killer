@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React from "react";
 import { useRouter } from 'next/navigation';
 import { SuggestionItem } from "./SuggestionItem";
@@ -7,6 +7,7 @@ import styles from "../styles/Sidebar.module.css";
 export const Sidebar = () => {
   const [suggestions, setSuggestions] = React.useState([]);
   const [currentUserId, setCurrentUserId] = React.useState('');
+  const [followingIds, setFollowingIds] = React.useState(new Set());
 
   React.useEffect(() => {
     const fetchSuggestions = async (currentUserId) => {
@@ -16,30 +17,31 @@ export const Sidebar = () => {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log("Fetched users:", data); // Log fetched users
         const filteredSuggestions = data ? data.filter(user => {
           if (user.id === currentUserId) {
-            console.log('Excluding current user from suggestions:', user);
             return false;
           }
           return true;
         }) : [];
-        console.log("Filtered suggestions (excluding current user):", filteredSuggestions);
-        setSuggestions(filteredSuggestions);
+        
+        const suggestionsWithFollowStatus = filteredSuggestions.map(user => ({
+          ...user,
+          isFollowing: followingIds.has(user.id)
+        }));
+        
+        setSuggestions(suggestionsWithFollowStatus);
       } catch (error) {
         console.error('Error fetching suggestions:', error);
       }
     };
 
     const fetchCurrentUser = async () => {
-      console.log("Fetching current user..."); // Debug log
       try {
         const response = await fetch('http://localhost:3001/api/sessions/current', {
-          credentials: 'include' // Include cookies for authentication
+          credentials: 'include'
         });
         
         if (response.status === 401) {
-          console.warn('User not authenticated, redirecting to login');
           return;
         }
         
@@ -48,17 +50,31 @@ export const Sidebar = () => {
         }
         
         const data = await response.json();
-        console.log("Current User Data:", data); // Log the current user data
         
         if (data && data.user && data.user.id) {
-          setCurrentUserId(data.user.id); // Store the current user's ID from the user object
-          // Fetch suggestions immediately after setting currentUserId
+          setCurrentUserId(data.user.id);
           await fetchSuggestions(data.user.id);
+          await fetchFollowing(data.user.id);
         } else {
           console.error('Current user data is invalid:', data);
         }
       } catch (error) {
         console.error('Error fetching current user:', error);
+      }
+    };
+
+    const fetchFollowing = async (userId) => {
+      try {
+        const response = await fetch(`http://localhost:3001/api/users/${userId}/following`, {
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          throw new Error(`Failed to fetch following users: ${response.statusText}`);
+        }
+        const data = await response.json();
+        setFollowingIds(new Set(data.map(user => user.id)));
+      } catch (error) {
+        console.error('Error fetching following users:', error);
       }
     };
 
@@ -74,22 +90,18 @@ export const Sidebar = () => {
   return (
     <>
       <div className={styles.sidebar}>
-        <div className={styles.userProfile}>
-          <div className={styles.avatar} onClick={() => router.push(`/profile/${currentUserId}`)} />
-        </div>
         <div className={styles.suggestionsHeader}>
           <div className={styles.suggestionsTitle}>Предложения для вас</div>
-          <div className={styles.seeAll}>Смотреть все</div>
         </div>
         <div className={styles.suggestionsList}>
           {suggestions.map((suggestion) => (
             <SuggestionItem
               key={suggestion.nickname}
               nickname={suggestion.nickname}
-              userId={suggestion.id} // Assuming the user ID is available in the suggestion object
+              userId={suggestion.id}
+              isFollowing={suggestion.isFollowing}
               onClick={() => {
-                console.log(`Navigating to profile of user ID: ${suggestion.id}`); // Log the user ID being used
-                router.push(`/profile/${suggestion.id}`); // Use userId for navigation
+                router.push(`/profile/${suggestion.id}`);
               }}
             />
           ))}

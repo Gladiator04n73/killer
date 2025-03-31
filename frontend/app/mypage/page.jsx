@@ -1,46 +1,53 @@
-'use client'
+'use client';
 import React from "react";
+import { useRouter } from 'next/router';
 import ProfileHeader from "./components/ProfileHeader";
 import ProfileInfo from "./components/ProfileInfo";
 import PhotoGrid from "./components/PhotoGrid";
+import { checkSession } from "../utils/api";
 import styles from "./styles/Profile.module.css";
 
-export default function Profile({ params: paramsPromise }) {
-  const params = React.use(paramsPromise);
+export default function Profile() {
   const [profileData, setProfileData] = React.useState(null);
   const [posts, setPosts] = React.useState([]);
-  
-
+  const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
-    const fetchProfileData = async () => {
+    const fetchData = async () => {
+      const userData = await checkSession();
+      if (!userData) {
+        router.push('/auth');
+        return;
+      }
+
       try {
-        const response = await fetch(`http://localhost:3001/api/users/${params.id}`);
-        if (!response.ok) throw new Error('Failed to fetch profile data');
-        const data = await response.json();
-        setProfileData(data);
+        const profileResponse = await fetch(`http://localhost:3001/api/users/${userData.id}`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+        if (!profileResponse.ok) throw new Error('Failed to fetch profile data');
+        const profileData = await profileResponse.json();
+        console.log('Profile data fetched:', profileData);
+        setProfileData(profileData);
+
+        const postsResponse = await fetch(`http://localhost:3001/api/articles/user_articles?user_id=${userData.id}`);
+        if (!postsResponse.ok) throw new Error('Failed to fetch posts');
+        const postsData = await postsResponse.json();
+        console.log('Posts fetched for user ID:', userData.id, postsData);
+        setPosts(postsData.reverse());
       } catch (error) {
-        console.error('Error fetching profile data:', error);
+        console.error('Error fetching data:', error);
+        setError('Не удалось загрузить данные профиля или посты.');
       }
     };
 
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch(`http://localhost:3001/api/articles?user_id=${params.id}`);
-        if (!response.ok) throw new Error('Failed to fetch posts');
-        const data = await response.json();
-        setPosts(data.reverse());
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-      }
-    };
+    fetchData();
+  }, []);
 
-    fetchProfileData();
-    fetchPosts();
-  }, [params.id]);
+  if (error) return <div>{error}</div>;
+  if (!profileData) return <div></div>;
 
-  if (!profileData) return <div>Loading...</div>;
-
+  console.log('Profile data fetched:', profileData);
   const profileStats = {
     posts: posts.length,
     followers: profileData.followers_count || 0,
@@ -48,37 +55,40 @@ export default function Profile({ params: paramsPromise }) {
   };
 
   const photos = posts.map(post => {
-    console.log('Post photo URL:', post.photo_url); // Log each photo URL
     return {
       url: post.photo_url.startsWith('http') ? post.photo_url : `http://localhost:3001${post.photo_url}`,
       description: post.title
     };
   });
 
-  console.log('Photos array:', photos); // Log the complete photos array
+  const setArticles = (newArticles) => {
+    setPosts(newArticles);
+  };
 
   return (
-    <div><ProfileHeader />
-    <div className={styles.profile}>
-      <ProfileInfo
-        username={profileData.nickname}
-        stats={profileStats}
-        fullName={profileData.name}
-      />
-      <div className={styles.divider} />
-      <div className={styles.tabIndicator} />
-      <div className={styles.postsTab}>
-        <img
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/0f43de0ce7b2f2dc66800f1a3dbd86bbc96011c229fa2de1c47beefae4b6a621?placeholderIfAbsent=true&apiKey=89ea648570324a1aa1020e20f2ec4be4"
-          alt=""
-          className={styles.postsIcon}
+    <div>
+      <ProfileHeader />
+      <div className={styles.profile}>
+        <ProfileInfo
+          username={profileData.nickname}
+          stats={profileStats}
+          fullName={profileData.name}
+          photo={profileData.photo}
         />
-        <span>ПОСТЫ</span>
+        <div className={styles.divider} />
+        <div className={styles.tabIndicator} />
+        <div className={styles.postsTab}>
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/0f43de0ce7b2f2dc66800f1a3dbd86bbc96011c229fa2de1c47beefae4b6a621?placeholderIfAbsent=true&apiKey=89ea648570324a1aa1020e20f2ec4be4"
+            alt=""
+            className={styles.postsIcon}
+          />
+          <span>ПОСТЫ</span>
+        </div>
+        <div className={styles.gridContainer}>
+          <PhotoGrid articles={posts} setArticles={setArticles} className={posts.length === 1 ? styles.fullWidth : ''} />
+        </div>
       </div>
-      <div className={styles.gridContainer}>
-        <PhotoGrid photos={photos} />
-      </div>
-    </div>
     </div>
   );
-};
+}

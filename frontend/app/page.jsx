@@ -3,7 +3,8 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from './providers/AuthProvider';
 import { useEffect } from 'react';
 import LoadingScreen from './loadingScreen/LoadingScreen';
-import Header from './feed/components/Header'; // Import Header component
+import Header from './feed/components/Header';
+import AuthLayout from './profile/[id]/layout';
 
 export default function Page() {
   const router = useRouter();
@@ -20,8 +21,7 @@ export default function Page() {
   }, [user, loading, router]);
 
   return (
-    <>
-
-    </>
+    <AuthLayout title="Welcome" username={user ? user.nickname : null}>
+    </AuthLayout>
   );
 }

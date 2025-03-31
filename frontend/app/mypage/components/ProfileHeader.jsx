@@ -1,43 +1,42 @@
-'use client'
+'use client';
 import { useState } from "react";
 import React from "react";
 import Link from "next/link";
 import styles from "../styles/Header.module.css"; 
-import { logout } from "../../utils/auth"; // Import the logout function
-import { useAuth } from '../../providers/AuthProvider'; // Import useAuth
+import { logout } from "../../utils/auth";
+import { useAuth } from '../../providers/AuthProvider';
+import { useRouter } from 'next/navigation';
 
 export default function ProfileHeader() {
-  const [postTitle, setPostTitle] = useState(''); // State for post title
-  const [postBody, setPostContent] = useState(''); // State for post content
-  const [image, setImage] = useState(null); // State for image
-  const [show, setShow] = useState(null); // State for dropdown visibility
-  const [searchQuery, setSearchQuery] = useState(''); // State for search query
-  const [searchResults, setSearchResults] = useState([]); // State for search results
-  const { user } = useAuth(); // Get user information from AuthProvider
+  const router = useRouter();
+  const [postTitle, setPostTitle] = useState('');
+  const [postBody, setPostContent] = useState('');
+  const [image, setImage] = useState(null);
+  const [show, setShow] = useState(null); 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const { user } = useAuth();
 
   const handleLogout = async () => {
-    await logout(); // Call the logout function from auth.js
-    console.log("User logged out");
+    await logout();
   };
 
   const onShowClick = (icon) => {
-    console.log("Dropdown toggle clicked:", icon); // Added console log for debugging
     setShow(prevShow => (prevShow === icon ? null : icon === 'heart' ? 'heart' : icon === 'more' ? 'more' : ''));
   };
 
   const handlePostSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
     const formData = new FormData();
     formData.append('article[title]', postTitle);
-    formData.append('article[body]', postBody); // Ensure body is sent under article key
-    formData.append('article[photo]', image); // Ensure photo is sent under article key
-    
-      formData.append('user_id', user.id); // Include user_id in the FormData
+    formData.append('article[body]', postBody);
+    formData.append('article[photo]', image);
+    formData.append('user_id', user.id);
 
     try {
       const response = await fetch('http://localhost:3001/api/articles', {
         method: 'POST',
-        body: formData, // Use FormData to send the data
+        body: formData,
       });
 
       if (response.ok) {
@@ -58,6 +57,7 @@ export default function ProfileHeader() {
           src="https://cdn.builder.io/api/v1/image/assets/TEMP/b731b4d703b44d44bd8f1d62864f21ecdba94eb64f9d87a2b73c3c82c4094b9c?placeholderIfAbsent=true&apiKey=89ea648570324a1aa1020e20f2ec4be4"
           className={styles.logo}
           alt="Instagram logo"
+          onClick={() => { router.push('/feed'); }}
         />
         <div className={styles.searchContainer}>
           <img
@@ -83,7 +83,6 @@ export default function ProfileHeader() {
                     setSearchResults(data);
                   }
                 } catch (error) {
-                  console.error('Search error:', error);
                 }
               } else {
                 setSearchResults([]);
@@ -167,10 +166,10 @@ export default function ProfileHeader() {
           {show === 'heart' && (
             <div className={`${styles.dropdownMenu} ${show === 'heart' ? styles.active : ''}`}>
               <div className={styles.dropdownMenuContent}>
-                <Link href="/profile" className={styles.dropdownLink}>Профиль</Link>
+                <Link href="/mypage" className={styles.dropdownLink}>Профиль</Link>
                 <Link href="/editProfile" className={styles.dropdownLink}>Настройки</Link>
                 <div className={styles.dropdownMenuDivider} />
-                <a onClick={handleLogout} className={styles.dropdownLink}>Выйти</a> {/* Change Link to a */}
+                <a onClick={handleLogout} className={styles.dropdownLink}>Выйти</a>
               </div>
             </div>
           )}

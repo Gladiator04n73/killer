@@ -16,8 +16,8 @@ def index
 
     def create
         @article = Article.find(params[:article_id]) 
-        puts "Received parameters: #{params.inspect}" # Отладочный вывод
-        puts "Comment Params: #{comment_params.inspect}" # Отладочный вывод для параметров комментария
+        puts "Received parameters: #{params.inspect}"
+        puts "Comment Params: #{comment_params.inspect}"
         if current_user.nil?
             render json: { error: 'User must be logged in to comment' }, status: :unauthorized
             return
@@ -26,7 +26,7 @@ def index
         if @comment.save
             render json: @comment, status: :created
         else
-            puts "Error creating comment: #{@comment.errors.full_messages}" # Отладочный вывод
+            puts "Error creating comment: #{@comment.errors.full_messages}"
             render json: { errors: @comment.errors.full_messages }, status: :unprocessable_entity
         end
 

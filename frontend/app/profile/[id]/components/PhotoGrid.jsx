@@ -1,11 +1,11 @@
 'use client';
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../../../providers/AuthProvider"; // Import the useAuth hook
+import { useAuth } from "../../../providers/AuthProvider";
 import styles from "../styles/PhotoGrid.module.css";
 
-const PhotoGrid = ({ articles, setArticles }) => { // Add setArticles prop to manage articles state
-  const { user } = useAuth(); // Access the user from the Auth context
-  console.log("Current user:", user); // Log the current user for debugging
+const PhotoGrid = ({ articles, setArticles }) => {
+  const { user } = useAuth();
+  console.log("Current user:", user);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [comments, setComments] = useState([]);
@@ -13,7 +13,7 @@ const PhotoGrid = ({ articles, setArticles }) => { // Add setArticles prop to ma
 
   const handleDelete = async (id) => {
     if (user.id !== article.user.id) {
-        alert("Вы не можете удалить чужие посты."); // Alert if the user is not the owner
+        alert("Вы не можете удалить чужие посты.");
         return;
     }
     const confirmDelete = window.confirm("Вы уверены, что хотите удалить этот пост?");
@@ -29,8 +29,7 @@ const PhotoGrid = ({ articles, setArticles }) => { // Add setArticles prop to ma
         console.error('Error deleting article:', errorText);
         return;
       }
-      // Update the articles state to remove the deleted article
-      setIsFormVisible(false); // Close the form after deletion
+      setIsFormVisible(false);
       setArticles((prevArticles) => prevArticles.filter(article => article.id !== id));
     } catch (error) {
       console.error('Error deleting article:', error);
@@ -66,15 +65,14 @@ const PhotoGrid = ({ articles, setArticles }) => { // Add setArticles prop to ma
   };
 
   const handleCommentSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission
-    console.log("Comment submission initiated."); // Log to confirm function execution
+    e.preventDefault();
+    console.log("Comment submission initiated.");
 
-    if (!user) { // Check if user is logged in
-        console.error("User must be logged in to comment."); // Log error to console
+    if (!user) {
+        console.error("User must be logged in to comment.");
         return;
     }
     if (newComment.trim()) {
-      // Send the new comment to the server
       try {
         const response = await fetch(`http://localhost:3001/api/articles/${selectedArticle.id}/comments`, {
           method: 'POST',
@@ -108,7 +106,6 @@ const PhotoGrid = ({ articles, setArticles }) => { // Add setArticles prop to ma
             className={styles.photoImage} 
             onError={() => console.error('Error loading image:', article.photo_url)} 
           />
-
         </div>
       )) : <div>Нет доступных статей.</div>}
       {isFormVisible && selectedArticle && (
@@ -132,8 +129,8 @@ const PhotoGrid = ({ articles, setArticles }) => { // Add setArticles prop to ma
               )}
               <div className={styles.postDetails}>
                 <div className={styles.description}>
-                  <span className={styles.username}>{selectedArticle.user.nickname}
-                    </span> {selectedArticle.body}</div>
+                  <span className={styles.username}>{selectedArticle.user.nickname}</span> {selectedArticle.body}
+                </div>
               </div>
             </div>
             <div className={styles.rightColumn}>

@@ -3,41 +3,41 @@ import { useState } from "react";
 import React from "react";
 import Link from "next/link";
 import styles from "../styles/Header.module.css"; 
-import { logout } from "../../utils/auth"; // Import the logout function
-import { useAuth } from '../../providers/AuthProvider'; // Import useAuth
+import { logout } from "../../utils/auth";
+import { useAuth } from '../../providers/AuthProvider';
 
 export const Header = () => {
-  const [postTitle, setPostTitle] = useState(''); // State for post title
-  const [postBody, setPostContent] = useState(''); // State for post content
-  const [image, setImage] = useState(null); // State for image
-  const [show, setShow] = useState(null); // State for dropdown visibility
-  const [searchQuery, setSearchQuery] = useState(''); // State for search query
-  const [searchResults, setSearchResults] = useState([]); // State for search results
-  const { user } = useAuth(); // Get user information from AuthProvider
+  const [postTitle, setPostTitle] = useState(''); 
+  const [postBody, setPostContent] = useState(''); 
+  const [image, setImage] = useState(null); 
+  const [show, setShow] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]); 
+  const { user } = useAuth(); 
 
   const handleLogout = async () => {
-    await logout(); // Call the logout function from auth.js
+    await logout(); 
     console.log("User logged out");
   };
 
   const onShowClick = (icon) => {
-    console.log("Dropdown toggle clicked:", icon); // Added console log for debugging
+    console.log("Dropdown toggle clicked:", icon); 
     setShow(prevShow => (prevShow === icon ? null : icon === 'heart' ? 'heart' : icon === 'more' ? 'more' : ''));
   };
 
   const handlePostSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
     const formData = new FormData();
     formData.append('article[title]', postTitle);
-    formData.append('article[body]', postBody); // Ensure body is sent under article key
-    formData.append('article[photo]', image); // Ensure photo is sent under article key
+    formData.append('article[body]', postBody); 
+    formData.append('article[photo]', image);
     
-      formData.append('user_id', user.id); // Include user_id in the FormData
+      formData.append('user_id', user.id);
 
     try {
       const response = await fetch('http://localhost:3001/api/articles', {
         method: 'POST',
-        body: formData, // Use FormData to send the data
+        body: formData,
       });
 
       if (response.ok) {
@@ -167,10 +167,10 @@ export const Header = () => {
           {show === 'heart' && (
             <div className={`${styles.dropdownMenu} ${show === 'heart' ? styles.active : ''}`}>
               <div className={styles.dropdownMenuContent}>
-                <Link href="/profile" className={styles.dropdownLink}>Профиль</Link>
+                <Link href="/mypage" className={styles.dropdownLink}>Профиль</Link>
                 <Link href="/editProfile" className={styles.dropdownLink}>Настройки</Link>
                 <div className={styles.dropdownMenuDivider} />
-                <a onClick={handleLogout} className={styles.dropdownLink}>Выйти</a> {/* Change Link to a */}
+                <a onClick={handleLogout} className={styles.dropdownLink}>Выйти</a>
               </div>
             </div>
           )}

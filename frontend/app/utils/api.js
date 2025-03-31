@@ -5,21 +5,21 @@ export const checkSession = async () => {
       credentials: 'include',
     });
 
-    // If session check fails or no active session, return null
+
     if (!response.ok || response.status === 401) {
-      console.log('No active session found');
+      console.log('No active session found. Please ensure the user is logged in and the session cookie is being sent.');
       return null;
     }
 
     const sessionData = await response.json();
     
-    // If no session data or user data, return null
+
     if (!sessionData?.user?.id) {
-      console.log('Invalid session data');
+      console.log('Invalid session data. Please check the session response structure.');
       return null;
     }
 
-    // Fetch user data only if session is valid
+
     const userResponse = await fetch(`http://localhost:3001/api/users/${sessionData.user.id}`, {
       method: 'GET',
       credentials: 'include',
@@ -31,11 +31,12 @@ export const checkSession = async () => {
     }
 
     const userData = await userResponse.json();
-    console.log('User data fetched successfully:', userData); // Debugging log
-    return userData; // Return only the user data without default values
+    console.log('User data fetched successfully:', userData);
+    console.log('User ID:', userData.id);
+    return userData;
 
   } catch (error) {
     console.error('Session check error:', error);
-    return null; // Return null on any error
+    return null;
   }
 };

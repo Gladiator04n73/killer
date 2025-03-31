@@ -44,7 +44,7 @@ $(document).ready(function(){
       <ul class="nav">
           <% if user_signed_in? %>
           <li class="nav-item">
-              <%= button_to "Создать пост", new_article_path, method: :get,
+<%= button_to "Создать пост", new_api_article_path, method: :get,
               class: "btn btn-primary btn-md btn-success", data: { toggle: "modal" } %>
           <ul class="nav navbar-nav navbar-right">
             <% if current_user&.photo.present? %>

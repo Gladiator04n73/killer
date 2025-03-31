@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import styles from "../styles/Post.module.css";
 import postStyles from "./Post.module.css";
@@ -11,18 +11,17 @@ export const Post = ({
   commentCount,
   timeAgo,
   photo_url,
-  id
+  id,
+  avatar
 }) => {
   const [showComments, setShowComments] = useState(false);
 
-  // Debugging: Log the comments received
-  console.log('Comments received:', comments);
 
   return (
     <article className={styles.post}>
       <div className={styles.header}>
         <div className={styles.userInfo}>
-          <div className={styles.avatar} />
+          {avatar && <img src={avatar} alt="User Avatar" className={styles.avatar} />}
           <div className={styles.username}>{nickname}</div>
         </div>
       </div>
@@ -47,8 +46,6 @@ export const Post = ({
           {showComments && (
             <div className={styles.commentsSection}>
               {comments.map(comment => {
-                // Debugging: Log each comment object
-                console.log('Comment object:', comment);
                 return (
                   <div key={comment.id} className={styles.comment}>
                     <span className={styles.username}>{comment.commenter}</span>: {comment.body}
@@ -69,33 +66,30 @@ export const Post = ({
       <form className={styles.actions} onSubmit={async (e) => {
         e.preventDefault();
         const comment = e.target.commentInput.value;
-        console.log('Comment:', comment); // Отладочный вывод
         const requestBody = {
           comment: {
             body: comment,
             commenter: nickname
           }
         };
-        console.log('Sending Request Body:', JSON.stringify(requestBody)); // Отладочный вывод
+        console.log('Sending Request Body:', JSON.stringify(requestBody));
         if (!comment) {
-          console.log('No comment provided'); // Отладочный вывод
           return;
         }
         
         try {
           const response = await fetch(`http://localhost:3001/api/articles/${id}/comments`, {
             method: 'POST',
-            credentials: 'include', // Include credentials in the request
+            credentials: 'include',
             headers: {
-              'Content-Type': 'application/json' // Убедитесь, что заголовок установлен
+              'Content-Type': 'application/json'
             },
             body: JSON.stringify(requestBody)
           });
           
-          console.log('Response Status:', response.status); // Отладочный вывод
           if (response.ok) {
             e.target.commentInput.value = ''; 
-            window.location.reload(); // Refresh to show new comment
+            window.location.reload(); 
           }
         } catch (error) {
           console.error('Error posting comment:', error);

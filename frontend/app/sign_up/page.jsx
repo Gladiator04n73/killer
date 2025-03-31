@@ -13,12 +13,12 @@ export default function SignUpForm() {
 
   const handleSubmit = async (e) => {
     console.log('Submitting registration with:', { email: email, name: name, nickname: nickname, password: password }); // Debugging log
-    console.log('Email:', email, 'Password:', password); // Additional debugging log
-    console.log('Form values:', { email, name, nickname, password }); // Log all form values
+    console.log('Email:', email, 'Password:', password);
+    console.log('Form values:', { email, name, nickname, password });
     e.preventDefault();
     try {
       const userData = await register(email, name, nickname, password);
-      // Handle successful registration (e.g., redirect or show a success message)
+
     } catch (error) {
       setError(error.message);
     }

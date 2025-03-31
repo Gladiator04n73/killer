@@ -1,14 +1,22 @@
 class Api::RegistrationsController < Devise::RegistrationsController
   def create
     configure_devise_mapping
-    user = User.new(email: params[:user][:email], name: params[:user][:name], nickname: params[:user][:nickname], password: params[:user][:password])
-    
+    user = User.new(
+      email: params[:user][:email],
+      name: params[:user][:name],
+      nickname: params[:user][:nickname],
+      password: params[:user][:password]
+    )
+
+    user.photo.attach(params[:user][:photo]) if params[:user][:photo].present?
+
     if user.save
       render json: { message: 'Пользователь успешно зарегистрирован' }, status: :created
     else
       render json: { error: user.errors.full_messages }, status: :unprocessable_entity
     end
   end
+
   respond_to :json
   skip_before_action :verify_authenticity_token
 

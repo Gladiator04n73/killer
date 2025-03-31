@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../styles/SuggestionItem.module.css";
 
 const handleFollow = async (userId) => {
@@ -37,8 +37,30 @@ const handleUnfollow = async (userId) => {
   }
 };
 
-export const SuggestionItem = ({ nickname, onClick, isFollowing = false, onFollowToggle = () => {}, userId }) => {
-  const [following, setFollowing] = useState(isFollowing);
+export const SuggestionItem = ({ nickname, onClick, userId, userPhotoUrl }) => {
+  const [following, setFollowing] = useState(false);
+
+  useEffect(() => {
+    const checkFollowingStatus = async () => {
+      console.log(`User ID for following status check: ${userId}`); 
+      console.log(`Checking following status for user ID: ${userId}`);
+      try {
+        const response = await fetch(`http://localhost:3001/api/users/${userId}/following_status`, {
+          credentials: 'include'
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setFollowing(data.following);
+        } else {
+          console.error('Failed to fetch following status:', response.status, response.statusText);
+        }
+      } catch (error) {
+        console.error('Error checking following status:', error);
+      }
+    };
+
+    checkFollowingStatus();
+  }, [userId]);
 
   const handleToggleFollow = async () => {
     try {
@@ -48,7 +70,6 @@ export const SuggestionItem = ({ nickname, onClick, isFollowing = false, onFollo
         await handleFollow(userId);
       }
       setFollowing(!following);
-      onFollowToggle();
     } catch (error) {
       console.error('Error toggling follow status:', error);
     }
@@ -57,7 +78,7 @@ export const SuggestionItem = ({ nickname, onClick, isFollowing = false, onFollo
   return (
     <div className={styles.suggestion}>
       <div className={styles.userInfo}>
-        <div className={styles.avatar}/>
+        <img src={userPhotoUrl || '/default.jpg'} alt="User Avatar" className={styles.avatar} />
         <div className={styles.details}>
           <div className={styles.username} onClick={onClick}>{nickname}</div>
           <div className={styles.subtitle}>Рекомендации</div>

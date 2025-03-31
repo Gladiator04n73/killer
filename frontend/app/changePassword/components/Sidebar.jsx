@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import styles from "../styles/Sidebar.module.css";
 
 export const Sidebar = () => {
+  const router = useRouter();
   return (
     <aside className={styles.leftsideBg}>
         <button className={styles.editProfileText} onClick={() => router.push('/editProfile')}>

@@ -3,9 +3,9 @@ class Api::UsersController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def current
-    Rails.logger.debug("Current user: #{current_user.inspect}") # Log current user for debugging
+    Rails.logger.debug("Current user: #{current_user.inspect}")
     if current_user
-      Rails.logger.debug("Current user: #{current_user.inspect}") # Log current user for debugging
+      Rails.logger.debug("Current user: #{current_user.inspect}")
       render json: current_user
     else
       render json: { error: 'User not authenticated' }, status: :unauthorized
@@ -13,34 +13,60 @@ class Api::UsersController < ApplicationController
   end
 
   def relationships
-    user = User.find(params[:id])
+    user = User.find(params[:user_id])
     followers = user.followers
     following = user.following
     render json: { followers: followers, following: following }, status: :ok
   end
 
-
   def show
-    Rails.logger.debug("Params ID for user lookup: #{params[:id]}") # Log params ID for debugging
-    @user = User.find_by(id: params[:id]) # Use find_by to avoid exceptions
+    Rails.logger.debug("Params ID for user lookup: #{params[:id]}")
+    @user = User.find_by(id: params[:id])
     if @user
       Rails.logger.debug("Response for user ID #{params[:id]}: #{@user.to_json}")
-    render json: @user.as_json.merge({
-      followers_count: @user.followers.count,
-      following_count: @user.following.count
-    })
+      render json: @user.as_json.merge({
+        photo: @user.photo.attached? ? url_for(@user.photo) : nil,
+        followers_count: @user.followers.count,
+        following_count: @user.following.count
+      })
     else
-      Rails.logger.error("User not found for ID: #{params[:id]}") # Log error
+      Rails.logger.error("User not found for ID: #{params[:id]}")
       render json: { error: "User not found" }, status: :not_found
     end
   end
 
   def update
     @user = User.find(params[:id])
+    if params[:user][:photo].present?
+      @user.photo.attach(params[:user][:photo])
+    end
     if @user.update(user_params)
       render json: @user
     else
       render json: { error: "НЕТ ЗАПИСЕЙ"}
+    end
+  end
+
+  def update_photo
+    @user = User.find(params[:id])
+    Rails.logger.debug("Received parameters: #{params.inspect}")
+
+    # Permit the photo parameter
+    permitted_params = params.require(:user).permit(:photo)
+
+    if permitted_params[:photo].present?
+      @user.photo.attach(permitted_params[:photo])
+      Rails.logger.debug("Photo attached: #{@user.photo.attached?}")
+    else
+      render json: { error: "Photo not provided." }, status: :unprocessable_entity and return
+    end
+
+    if @user.save
+      render json: @user.as_json.merge({
+        photo: @user.photo.attached? ? url_for(@user.photo) : nil
+      }), status: :ok
+    else
+      render json: { error: "Ошибка при обновлении фото." }, status: :unprocessable_entity
     end
   end
 
@@ -58,7 +84,7 @@ class Api::UsersController < ApplicationController
 
   def follow
     @user = User.find(params[:id])
-    Rails.logger.debug("Current user: #{current_user.inspect}") # Log current user for debugging
+    Rails.logger.debug("Current user: #{current_user.inspect}")
     if current_user && !current_user.following.include?(@user) && current_user.follow(@user)
       render json: { message: "Вы подписались на пользователя" }, status: :ok
     else
@@ -94,6 +120,24 @@ class Api::UsersController < ApplicationController
     @q = User.ransack(nickname_cont: params[:q])
     @users = @q.result(distinct: true)
     render json: @users
+  end
+
+  def following
+    if current_user
+      following_users = current_user.following
+      render json: following_users, status: :ok
+    else
+      render json: { error: 'User not authenticated' }, status: :unauthorized
+    end
+  end
+
+  def following_status
+    user = User.find(params[:user_id])
+    if current_user.following.include?(user)
+      render json: { following: true }, status: :ok
+    else
+      render json: { following: false }, status: :ok
+    end
   end
 
   private

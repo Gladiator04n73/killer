@@ -13,7 +13,9 @@ class User < ApplicationRecord
   def follow(other_user)
     following << other_user unless following.include?(other_user)
   end
-
+  def photo_url
+    photo.attached? ? Rails.application.routes.url_helpers.rails_blob_url(photo, only_path: true) : nil
+  end
   def unfollow(other_user)
     following.delete(other_user)
   end
@@ -24,6 +26,12 @@ class User < ApplicationRecord
   validates :gender, presence: false
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  after_initialize :set_default_photo, if: :new_record?
+
+  def set_default_photo
+    self.photo.attach(io: File.open(Rails.root.join('public', 'default.jpg')), 
+    filename: 'default.jpg') unless photo.attached?
+  end
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
@@ -37,5 +45,6 @@ class User < ApplicationRecord
   has_many :subscribers, through: :subscribers_subscriptions, source: :subscrib
 
   has_many :post_subscriptions, dependent: :destroy
+
   has_many :subscribed_posts, through: :post_subscriptions, source: :post, class_name: 'Article'
 end

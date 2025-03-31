@@ -5,7 +5,7 @@
   flex-direction: column;
   overflow: hidden;
   align-items: center;
-  width: 100%; /* Ensure the profile spans the full width */
+  width: 100%;
 }
 
 .divider {
@@ -41,6 +41,18 @@
   max-width: 100%;
   margin-top: 18px;
 }
+
+.post-number {
+    color: gray;
+}
+
+
+
+.fullWidth {
+  width: 100%;
+  display: block;
+}
+
 
 @media (max-width: 991px) {
   .profile {
