@@ -2,26 +2,50 @@
 import { useState } from "react";
 import React from "react";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 import styles from "../styles/Header.module.css"; 
 import { logout } from "../../utils/auth"; 
 import { useAuth } from '../../providers/AuthProvider'; 
 
+import { useEffect } from "react";
+
 export const Header = () => {
+  const router = useRouter();
   const [postTitle, setPostTitle] = useState('');
   const [postBody, setPostContent] = useState('');
   const [image, setImage] = useState(null);
   const [show, setShow] = useState(null); 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const { user } = useAuth(); 
+  const { user, setUser } = useAuth(); 
 
   const handleLogout = async () => {
     await logout();
+    setUser(null);
+    router.push('/auth');
   };
 
   const onShowClick = (icon) => {
     setShow(prevShow => (prevShow === icon ? null : icon === 'heart' ? 'heart' : icon === 'more' ? 'more' : ''));
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const dropdownMenu = document.querySelector(`.${styles.dropdownMenu}`);
+      if (dropdownMenu && !dropdownMenu.contains(event.target)) {
+        const navIconsContainer = document.querySelector(`.${styles.navIconsContainer}`);
+        if (navIconsContainer && !navIconsContainer.contains(event.target)) {
+          setShow(null);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
 
   const handlePostSubmit = async (e) => {
     e.preventDefault();
@@ -106,6 +130,7 @@ export const Header = () => {
             src='./home.png'
             className={styles.navIcons}
             alt="Navigation icons"
+            onClick={() => router.push('/feed')}
           />
           <img
             loading="lazy"
@@ -166,7 +191,7 @@ export const Header = () => {
                 <Link href="/mypage" className={styles.dropdownLink}>Профиль</Link>
                 <Link href="/editProfile" className={styles.dropdownLink}>Настройки</Link>
                 <div className={styles.dropdownMenuDivider} />
-                <a onClick={handleLogout} className={styles.dropdownLink}>Выйти</a>
+                <button onClick={handleLogout} className={styles.dropdownLink}>Выйти</button>
               </div>
             </div>
           )}

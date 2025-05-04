@@ -95,7 +95,8 @@ export const Sidebar = () => {
         </div>
         <div className={styles.suggestionsList}>
           {suggestions.map((suggestion) => (
-            <SuggestionItem
+          <SuggestionItem
+            avatar={suggestion.photo}
               key={suggestion.nickname}
               nickname={suggestion.nickname}
               userId={suggestion.id}

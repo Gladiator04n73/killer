@@ -37,7 +37,7 @@ const handleUnfollow = async (userId) => {
   }
 };
 
-export const SuggestionItem = ({ nickname, onClick, userId, userPhotoUrl }) => {
+export const SuggestionItem = ({ nickname, onClick, userId, avatar, isFollowing }) => {
   const [following, setFollowing] = useState(false);
 
   useEffect(() => {
@@ -78,7 +78,7 @@ export const SuggestionItem = ({ nickname, onClick, userId, userPhotoUrl }) => {
   return (
     <div className={styles.suggestion}>
       <div className={styles.userInfo}>
-        <img src={userPhotoUrl || '/default.jpg'} alt="User Avatar" className={styles.avatar} />
+        <img src={avatar || '/default.jpg'} alt="User Avatar" className={styles.avatar} />
         <div className={styles.details}>
           <div className={styles.username} onClick={onClick}>{nickname}</div>
           <div className={styles.subtitle}>Рекомендации</div>

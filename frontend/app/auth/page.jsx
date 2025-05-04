@@ -6,25 +6,34 @@ import { ImageSlider } from "./components/ImageSlider";
 import { StoreButtons } from "./components/StoreButtons";
 import { login } from '../utils/auth';
 
-
 export default function LoginPage() {
   const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-  
-    const router = useRouter();
-    const [error, setError] = useState(null);
-    
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      setError(null); // Сбрасываем ошибку перед новой попыткой
-      try {
-        const userData = await login(email, password);
+  const [password, setPassword] = useState('');
+  const router = useRouter();
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null); // Сбрасываем ошибку перед новой попыткой
+
+    if (!email || !password) {
+      setError('Email и пароль обязательны');
+      return;
+    }
+
+    try {
+      const userData = await login(email, password);
+      if (userData && userData.alreadyLoggedIn) {
         router.push('/feed');
-      } catch (error) {
-        console.error('Login failed:', error);
-        setError(error.message || 'Произошла ошибка при входе. Попробуйте еще раз.');
+        return;
       }
-    };
+      router.push('/feed');
+    } catch (error) {
+      console.error('Login failed:', error);
+      setError(error.message || 'Произошла ошибка при входе. Попробуйте еще раз.');
+    }
+  };
+
   return (
     <main className={styles.loginContainer}>
       <div className={styles.contentWrapper}>
@@ -58,14 +67,14 @@ export default function LoginPage() {
                   aria-label="Password"
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <button type="submit" className={styles.loginButton} onClick={() => router.push('/feed')}>
-                Войти
+                <button type="submit" className={styles.loginButton}>
+                  Войти
                 </button>
                 {error && <div style={{color: 'red', marginTop: '10px'}}>{error}</div>}
                 <div className={styles.hrContainer}>
-            <hr className={styles.hrOnDiv}></hr>
-            <div className={styles.divider}>ИЛИ</div>
-          </div>
+                  <hr className={styles.hrOnDiv}></hr>
+                  <div className={styles.divider}>ИЛИ</div>
+                </div>
                 <button type="button" className={styles.googleButton}>
                   <img
                     loading="lazy"
@@ -76,7 +85,7 @@ export default function LoginPage() {
                   <span>Продолжить с Google</span>
                 </button>
                 <button type="button" className={styles.forgotPassword}>
-                Вы забыли пароль?
+                  Вы забыли пароль?
                 </button>
               </form>
               <div className={styles.signupPrompt}>

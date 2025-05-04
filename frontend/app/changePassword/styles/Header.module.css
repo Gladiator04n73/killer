@@ -102,23 +102,23 @@
 }
 
 .formPost {
-  width: 90%; 
-  max-width: 500px; 
+  width: 90%;
+  max-width: 500px;
   height: auto;
   position: fixed;
-  top: 50%; 
-  left: 50%; 
-  transform: translate(-50%, -50%); 
-  z-index: 1000; 
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
   background: #fff;
-  padding: 20px; 
-  border-radius: 8px; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .formPostInput {
   width: 100%;
-  padding: 12px; 
+  padding: 12px;
   margin-bottom: 10px;
   border: 1px solid #007bff;
   border-radius: 4px;
@@ -131,20 +131,20 @@
   margin-bottom: 10px;
   border: 1px solid #007bff;
   border-radius: 4px;
-  height: 120px; 
-  font-size: 16px; 
+  height: 120px;
+  font-size: 16px;
 }
 
 .formPostButton {
   width: 100%;
   margin-top: 12px;
-  padding: 12px; 
+  padding: 12px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px; 
+  font-size: 16px;
 }
 
 .formPostButton:hover {
@@ -154,43 +154,61 @@
 
 
 .divider {
-  border: none; 
-  margin: 10px 0; 
+  border: none;
+  margin: 10px 0;
 }
 
 .dropdownMenu {
   bottom: 68%;
   position: absolute; 
-  display: inline-block; 
+  display: inline-block;
   z-index: 1000;
 }
 .dropdownMenuContent {
   position: relative;
-  top: 100%; 
-  left: 100%; 
-  transform: translateX(-50%); 
+  top: 100%;
+  left: 100%;
+  transform: translateX(-50%);
   background-color: #ffffff;
-  min-width: 150px; 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+  min-width: 150px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   z-index: 1;
-  padding: 12px 0; 
+  padding: 12px 0;
 }
 
 .dropdownLink {
   display: block;
-  padding: 10px 16px; 
-  color: #262626; 
+  padding: 10px 16px;
+  color: #262626;
   text-decoration: none;
-  font-size: 14px; 
+  font-size: 14px;
 }
 
 .dropdownLink:hover {
   background-color: #f0f0f0;
 }
 
+
+button.dropdownLink {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: 14px;
+}
+
+button.dropdownLink:hover {
+  border-radius: 4px;
+}
+
+
 .dropdownMenuDivider {
   height: 1px;
-  background-color: #efefef; 
-  margin: 8px 0; 
+  background-color: #efefef;
 }

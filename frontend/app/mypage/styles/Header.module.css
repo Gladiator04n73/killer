@@ -58,11 +58,11 @@
   background: #fff;
   border: 1px solid #efefef;
   border-radius: 8px;
-  width: calc(100% - 24px); 
+  width: calc(100% - 24px);
   max-height: 300px;
   overflow-y: auto;
-  top: 100%; 
-  left: 0; 
+  top: 100%;
+  left: 0;
   margin-top: 4px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   z-index: 1000;
@@ -104,25 +104,25 @@
 .formPost {
   width: 90%;
   max-width: 500px;
-  height: auto; 
-  position: fixed; 
-  top: 50%; 
+  height: auto;
+  position: fixed;
+  top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); 
-  z-index: 1000; 
-  background: #fff; 
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background: #fff;
   padding: 20px;
-  border-radius: 8px; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .formPostInput {
   width: 100%;
   padding: 12px;
   margin-bottom: 10px;
-  border: 1px solid #007bff; 
+  border: 1px solid #007bff;
   border-radius: 4px;
-  font-size: 16px; 
+  font-size: 16px;
 }
 
 .formPostTextarea {
@@ -138,7 +138,7 @@
 .formPostButton {
   width: 100%;
   margin-top: 12px;
-  padding: 12px; 
+  padding: 12px;
   background-color: #007bff;
   color: white;
   border: none;
@@ -148,7 +148,7 @@
 }
 
 .formPostButton:hover {
-  background-color: #0056b3; 
+  background-color: #0056b3;
 }
 
 
@@ -165,12 +165,12 @@
   z-index: 1000;
 }
 .dropdownMenuContent {
-  position: relative; 
-  top: 100%; 
-  left: 100%; 
+  position: relative;
+  top: 100%;
+  left: 100%;
   transform: translateX(-50%);
-  background-color: #ffffff; 
-  min-width: 150px; 
+  background-color: #ffffff;
+  min-width: 150px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   z-index: 1;
@@ -179,18 +179,36 @@
 
 .dropdownLink {
   display: block;
-  padding: 10px 16px; 
+  padding: 10px 16px;
   color: #262626;
-  text-decoration: none; 
-  font-size: 14px; 
+  text-decoration: none;
+  font-size: 14px;
 }
 
 .dropdownLink:hover {
   background-color: #f0f0f0;
 }
 
+
+button.dropdownLink {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: 14px;
+}
+
+button.dropdownLink:hover {
+  border-radius: 4px;
+}
+
+
 .dropdownMenuDivider {
   height: 1px;
   background-color: #efefef;
-  margin: 8px 0; 
 }

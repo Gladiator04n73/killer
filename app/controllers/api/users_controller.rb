@@ -113,7 +113,12 @@ class Api::UsersController < ApplicationController
 
   def index
     @users = User.all
-    render json: @users
+    users_with_photos = @users.map do |user|
+      user.as_json.merge({
+        photo: user.photo.attached? ? url_for(user.photo) : nil
+      })
+    end
+    render json: users_with_photos
   end
 
   def search

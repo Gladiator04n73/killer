@@ -38,6 +38,13 @@
   font-weight: 600;
   padding: 7px 11px;
   border: 1px solid rgba(239, 239, 239, 1);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  cursor: pointer;
+}
+
+.editButton:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .stats {

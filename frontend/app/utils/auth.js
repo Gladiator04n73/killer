@@ -45,7 +45,17 @@ export const login = async (email, password) => {
 
       return data;
     } catch (error) {
-      console.error('Login error:', error);
+
+      try {
+        if (error && typeof error === 'object' && error.message && error.message.includes('Вы уже вошли в систему')) {
+          return { alreadyLoggedIn: true };
+        }
+        if (error && error.toString && error.toString().includes('Вы уже вошли в систему')) {
+          return { alreadyLoggedIn: true };
+        }
+      } catch (e) {
+        console.error('Error processing login error:', e);
+      }
       throw new Error(error.message || 'Произошла ошибка при входе. Попробуйте еще раз.');
     }
   };

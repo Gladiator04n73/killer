@@ -132,9 +132,6 @@ export default function ChangePassword() {
                 <button type="submit" className={styles.submitButton} disabled={loading}>
                   Изменить пароль
                 </button>
-                <a href="#" onClick={(e) => e.preventDefault()} className={styles.forgotPassword}>
-                  Вы забыли свой пароль?
-                </a>
               </div>
             </form>
           </section>

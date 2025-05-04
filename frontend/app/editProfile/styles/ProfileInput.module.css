@@ -6,6 +6,9 @@
   margin: 0 auto;
   padding: 32px;
   height: 100%; /* Ensure the container takes full height */
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  color: #262626;
 }
 
 .profilePhoto {
@@ -126,5 +129,8 @@
   border: 1px solid #dbdbdb;
   border-radius: 4px;
   resize: vertical;
-  font-family: 'YourDesiredFont', sans-serif; /* Apply the website's font */
+  font-family: 'Roboto', sans-serif; /* Apply the website's font */
+  text-transform: none; /* Remove uppercase */
+  font-size: 12px;
+  color: #262626;
 }

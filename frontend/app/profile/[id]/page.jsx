@@ -1,6 +1,6 @@
 'use client';
 import React, { Suspense } from "react";
-import ProfileHeader from "./components/ProfileHeader";
+import { Header } from "./components/Header";
 import ProfileInfo from "./components/ProfileInfo";
 import PhotoGrid from "./components/PhotoGrid";
 import styles from "./styles/Profile.module.css";
@@ -76,7 +76,7 @@ export default function Profile({ params: paramsPromise }) {
 
   return (<Suspense fallback={<div>Loading profile...</div>}>
       <div>
-        <ProfileHeader username={profileData.nickname} />
+        <Header  username={profileData.nickname} />
         <div className={styles.profile}>
           <ProfileInfo
             updateStats={(change) => {

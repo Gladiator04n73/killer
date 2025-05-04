@@ -8,8 +8,7 @@ else
     cp env.example .env
 fi
 
-
 #cp env.example .env
-docker-compose build
-docker-compose run --rm web bin/rails db:setup
-docker-compose up
+docker-compose -f docker-compose.yml build
+docker-compose -f docker-compose.yml run --rm backend bin/rails db:setup
+docker-compose -f docker-compose.yml up

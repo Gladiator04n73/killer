@@ -11,7 +11,12 @@ const PhotoGrid = ({ articles, setArticles }) => {
   const [newComment, setNewComment] = useState('');
 
   const handleDelete = async (id) => {
-    if (user.id !== article.user.id) {
+    const articleToDelete = articles.find(article => article.id === id);
+    if (!articleToDelete) {
+      console.error("Article not found");
+      return;
+    }
+    if (user.id !== articleToDelete.user.id) {
         alert("Вы не можете удалить чужие посты."); 
         return;
     }

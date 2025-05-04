@@ -1,7 +1,7 @@
 'use client';
 import React from "react";
-import { useRouter } from 'next/router';
-import ProfileHeader from "./components/ProfileHeader";
+import { useRouter } from 'next/navigation';
+import { Header } from "./components/Header";
 import ProfileInfo from "./components/ProfileInfo";
 import PhotoGrid from "./components/PhotoGrid";
 import { checkSession } from "../utils/api";
@@ -11,6 +11,8 @@ export default function Profile() {
   const [profileData, setProfileData] = React.useState(null);
   const [posts, setPosts] = React.useState([]);
   const [error, setError] = React.useState(null);
+
+  const router = useRouter();
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -67,7 +69,7 @@ export default function Profile() {
 
   return (
     <div>
-      <ProfileHeader />
+      <Header />
       <div className={styles.profile}>
         <ProfileInfo
           username={profileData.nickname}

@@ -3,9 +3,9 @@ import { useState } from "react";
 import React from "react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-import styles from "../styles/Header.module.css"; 
-import { logout } from "../../utils/auth"; 
-import { useAuth } from '../../providers/AuthProvider'; 
+import styles from "../styles/Header.module.css"
+import { logout } from "../../../utils/auth"; 
+import { useAuth } from '../../../providers/AuthProvider'; 
 
 import { useEffect } from "react";
 
@@ -79,7 +79,7 @@ export const Header = () => {
       console.error("Error:", error);
     }
   };
-  
+
   return (
     <header className={styles.headerBg}>
       <div className={styles.headerContent}>
@@ -136,33 +136,33 @@ export const Header = () => {
         <div className={styles.navIconsContainer}>        
           <img
             loading="lazy"
-            src='./home.png'
+            src='../home.png'
             className={styles.navIcons}
             alt="Navigation icons"
             onClick={() => router.push('/feed')}
           />
           <img
             loading="lazy"
-            src='./chat.png'
+            src='../chat.png'
             className={styles.navIcons}
             alt="Navigation icons"
           />
           <img
             loading="lazy"
-            src='./more.png'
+            src='../more.png'
             className={styles.navIcons}
             alt="Navigation icons"
             onClick={() => onShowClick('more')}
           />
           <img
             loading="lazy"
-            src='./social.png'
+            src='../social.png'
             className={styles.navIcons}
             alt="Navigation icons"
           />
           <img
             loading="lazy"
-            src='./heart.png'
+            src='../heart.png'
             className={styles.navIcons}
             alt="Navigation icons"
             onClick={() => onShowClick('heart')}

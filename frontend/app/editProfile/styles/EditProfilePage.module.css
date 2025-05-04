@@ -1,6 +1,9 @@
 .editProfile {
   background: #f9f9f9; /* Reverted background to previous color */
   height: 100vh; /* Adjusted height to prevent overflow */
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  color: #262626;
 }
 
 .mainContent {

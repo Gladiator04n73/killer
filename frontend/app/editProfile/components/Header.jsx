@@ -1,55 +1,85 @@
-'use client'
+'use client';
 import { useState } from "react";
 import React from "react";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 import styles from "../styles/Header.module.css"; 
-import { logout } from "../../utils/auth";
-import { useAuth } from '../../providers/AuthProvider';
+import { logout } from "../../utils/auth"; 
+import { useAuth } from '../../providers/AuthProvider'; 
+
+import { useEffect } from "react";
 
 export const Header = () => {
-  const [postTitle, setPostTitle] = useState(''); 
-  const [postBody, setPostContent] = useState(''); 
-  const [image, setImage] = useState(null); 
-  const [show, setShow] = useState(null);
+  const router = useRouter();
+  const [postTitle, setPostTitle] = useState('');
+  const [postBody, setPostContent] = useState('');
+  const [image, setImage] = useState(null);
+  const [show, setShow] = useState(null); 
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]); 
-  const { user } = useAuth(); 
+  const [searchResults, setSearchResults] = useState([]);
+  const { user, setUser } = useAuth(); 
 
   const handleLogout = async () => {
-    await logout(); 
-    console.log("User logged out");
+    await logout();
+    setUser(null);
+    router.push('/auth');
   };
 
   const onShowClick = (icon) => {
-    console.log("Dropdown toggle clicked:", icon); 
     setShow(prevShow => (prevShow === icon ? null : icon === 'heart' ? 'heart' : icon === 'more' ? 'more' : ''));
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const dropdownMenu = document.querySelector(`.${styles.dropdownMenu}`);
+      const formPost = document.querySelector(`.${styles.formPost}`);
+      if (dropdownMenu && !dropdownMenu.contains(event.target)) {
+        const navIconsContainer = document.querySelector(`.${styles.navIconsContainer}`);
+        if (navIconsContainer && !navIconsContainer.contains(event.target)) {
+          setShow(null);
+        }
+      }
+      if (formPost && !formPost.contains(event.target) && show === 'more') {
+        setShow(null);
+      }
+    };
+  
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  
   const handlePostSubmit = async (e) => {
     e.preventDefault();
+    if (!user) {
+      console.error("User is not logged in");
+      return;
+    }
     const formData = new FormData();
     formData.append('article[title]', postTitle);
-    formData.append('article[body]', postBody); 
+    formData.append('article[body]', postBody);
     formData.append('article[photo]', image);
-    
-      formData.append('user_id', user.id);
-
+    formData.append('user_id', user.id);
+  
     try {
       const response = await fetch('http://localhost:3001/api/articles', {
         method: 'POST',
         body: formData,
       });
-
+  
       if (response.ok) {
         console.log("Post submitted successfully");
+        setShow(null);
       } else {
-        console.error("Error submitting post");
+        const errorText = await response.text();
+        console.error("Error submitting post:", response.status, errorText);
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
-
+  
   return (
     <header className={styles.headerBg}>
       <div className={styles.headerContent}>
@@ -83,7 +113,6 @@ export const Header = () => {
                     setSearchResults(data);
                   }
                 } catch (error) {
-                  console.error('Search error:', error);
                 }
               } else {
                 setSearchResults([]);
@@ -110,6 +139,7 @@ export const Header = () => {
             src='./home.png'
             className={styles.navIcons}
             alt="Navigation icons"
+            onClick={() => router.push('/feed')}
           />
           <img
             loading="lazy"
@@ -170,7 +200,7 @@ export const Header = () => {
                 <Link href="/mypage" className={styles.dropdownLink}>Профиль</Link>
                 <Link href="/editProfile" className={styles.dropdownLink}>Настройки</Link>
                 <div className={styles.dropdownMenuDivider} />
-                <a onClick={handleLogout} className={styles.dropdownLink}>Выйти</a>
+                <button onClick={handleLogout} className={styles.dropdownLink}>Выйти</button>
               </div>
             </div>
           )}
