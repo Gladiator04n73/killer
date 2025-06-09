@@ -8,6 +8,7 @@ COPY package*.json ./
 
 # Устанавливаем зависимости
 RUN npm install -g npm@10.8.2
+RUN npm install
 
 # Копируем исходный код
 COPY . .
