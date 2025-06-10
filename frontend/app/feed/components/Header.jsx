@@ -181,7 +181,12 @@ export const Header = () => {
                   accept="image/*"
                   onChange={(e) => setImage(e.target.files[0])}
                 />
-                <button type="submit" className={styles.formPostButton}>OK</button>
+                <button type="submit"
+                className={styles.formPostButton}
+                onClick={handlePostSubmit}
+                >
+                OK
+                </button>
               </form>
             </div>
           )}
